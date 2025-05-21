@@ -7,7 +7,7 @@ app = FastAPI()
 
 # PostgreSQL connection settings
 DB_CONFIG = {
-    "host": "localhost",
+    "host": "140.203.228.95",
     "port": 5432,
     "database": "sample_db",
     "user": "nocode_user",
