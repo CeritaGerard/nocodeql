@@ -9,11 +9,11 @@ app = FastAPI()
 
 # PostgreSQL connection settings
 DB_CONFIG = {
-    "host": "140.203.228.95",
+    "host": "dpg-d0mucfjuibrs73f20utg-a.oregon-postgres.render.com",
     "port": 5432,
-    "database": "sample_db",
-    "user": "nocode_user",
-    "password": "nocode_pass"
+    "database": "nocodeql_db",
+    "user": "nocodeql_db_user",
+    "password": "KM5oxbbw7TopSEI9OOBNATnTdgfgsdwM"
 }
 
 # Request body format
