@@ -1,0 +1,35 @@
+openapi: 3.0.0
+info:
+  title: NoCodeQL API
+  version: 1.0.0
+
+servers:
+  - url: https://nocodeql-api.onrender.com  # 👈 Replace with your Render URL
+
+paths:
+  /run-sql:
+    post:
+      summary: Run a SQL query
+      operationId: runSQL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sql:
+                  type: string
+                  description: SQL query to run
+      responses:
+        '200':
+          description: Query result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
