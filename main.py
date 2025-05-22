@@ -36,17 +36,18 @@ def init_db():
         conn = psycopg2.connect(**DB_CONFIG)
         cur = conn.cursor()
 
-        # Drop if exists
+        # Drop tables if they exist
+        cur.execute("DROP TABLE IF EXISTS order_items;")
         cur.execute("DROP TABLE IF EXISTS orders;")
-        cur.execute("DROP TABLE IF EXISTS users;")
+        cur.execute("DROP TABLE IF EXISTS products;")
 
-        # Create users table
+        # Create products table
         cur.execute("""
-        CREATE TABLE users (
+        CREATE TABLE products (
             id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            signup_date DATE NOT NULL
+            category TEXT NOT NULL,
+            price INTEGER NOT NULL
         );
         """)
 
@@ -54,33 +55,66 @@ def init_db():
         cur.execute("""
         CREATE TABLE orders (
             id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES users(id),
-            product TEXT NOT NULL,
-            amount INTEGER NOT NULL,
+            customer_name TEXT NOT NULL,
             order_date DATE NOT NULL
         );
         """)
 
-        # Insert sample users
+        # Create order_items table
         cur.execute("""
-        INSERT INTO users (name, email, signup_date) VALUES
-        ('Alice', 'alice@example.com', '2024-01-01'),
-        ('Bob', 'bob@example.com', '2024-02-15'),
-        ('Charlie', 'charlie@example.com', '2024-03-01');
+        CREATE TABLE order_items (
+            id SERIAL PRIMARY KEY,
+            order_id INTEGER REFERENCES orders(id),
+            product_id INTEGER REFERENCES products(id),
+            quantity INTEGER NOT NULL
+        );
         """)
 
-        # Insert sample orders
+        # Insert products
         cur.execute("""
-        INSERT INTO orders (user_id, product, amount, order_date) VALUES
-        (1, 'Laptop', 1200, '2024-03-02'),
-        (1, 'Mouse', 50, '2024-03-05'),
-        (2, 'Keyboard', 100, '2024-03-06'),
-        (3, 'Monitor', 250, '2024-03-08');
+        INSERT INTO products (name, category, price) VALUES
+        ('Milk', 'Dairy', 50),
+        ('Bread', 'Bakery', 30),
+        ('Eggs (12 pack)', 'Poultry', 60),
+        ('Soap Bar', 'Toiletries', 20),
+        ('Shampoo', 'Toiletries', 120);
+        """)
+
+        # Insert orders
+        cur.execute("""
+        INSERT INTO orders (customer_name, order_date) VALUES
+        ('Ramesh', '2024-05-01'),
+        ('Priya', '2024-05-02'),
+        ('Anjali', '2024-05-04'),
+        ('Vijay', '2024-05-05'),
+        ('Leela', '2024-05-06'),
+        ('Suresh', '2024-05-07'),
+        ('Sneha', '2024-05-08');
+        """)
+
+        # Insert order_items (expanded data)
+        cur.execute("""
+        INSERT INTO order_items (order_id, product_id, quantity) VALUES
+        (1, 1, 2),
+        (1, 4, 1),
+        (2, 2, 1),
+        (2, 5, 1),
+        (3, 3, 1),
+        (3, 1, 1),
+        (4, 2, 2),
+        (4, 5, 1),
+        (5, 1, 3),
+        (5, 3, 1),
+        (6, 4, 2),
+        (6, 5, 2),
+        (7, 1, 1),
+        (7, 2, 1),
+        (7, 4, 1);
         """)
 
         conn.commit()
         conn.close()
-        return JSONResponse({"message": "✅ Tables created and test data inserted successfully."})
+        return JSONResponse({"message": "✅ Retail demo (expanded) data inserted successfully."})
 
     except Exception as e:
         return JSONResponse({"error": str(e)})
