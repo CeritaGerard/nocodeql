@@ -83,13 +83,13 @@ def init_db():
         # Insert orders
         cur.execute("""
         INSERT INTO orders (customer_name, order_date) VALUES
-        ('Ramesh', '2024-05-01'),
-        ('Priya', '2024-05-02'),
-        ('Anjali', '2024-05-04'),
-        ('Vijay', '2024-05-05'),
-        ('Leela', '2024-05-06'),
-        ('Suresh', '2024-05-07'),
-        ('Sneha', '2024-05-08');
+        ('Ramesh', '2025-05-01'),
+        ('Priya', '2025-05-02'),
+        ('Anjali', '2025-05-04'),
+        ('Vijay', '2025-05-05'),
+        ('Leela', '2025-05-06'),
+        ('Suresh', '2025-05-07'),
+        ('Sneha', '2025-05-08');
         """)
 
         # Insert order_items (expanded data)
